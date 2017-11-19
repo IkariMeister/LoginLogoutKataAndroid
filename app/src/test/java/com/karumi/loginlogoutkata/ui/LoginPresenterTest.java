@@ -14,6 +14,7 @@ public class LoginPresenterTest {
     private static final String NOT_EMPTY_EMAIL = "any_email";
     private static final String NOT_EMPTY_PASSWORD = "any_password";
     private static final String EMPTY_EMAIL = null;
+    private static final String EMPTY_PASSWORD = null;
 
     @Mock LoginPresenter.View view;
 
@@ -43,8 +44,18 @@ public class LoginPresenterTest {
     @Test public void shouldDisableButtonWhenPasswordIsEmpty() throws Exception {
         LoginPresenter loginPresenter = new LoginPresenter(view);
 
+        loginPresenter.updateEmail(NOT_EMPTY_PASSWORD);
+        loginPresenter.updatePassword(EMPTY_PASSWORD);
+
+        verify(view, atLeastOnce()).disableLoginButton();
+        verify(view, never()).enableLoginButton();
+    }
+
+    @Test public void shouldDisableButtonWhenPasswordAndLoginIsEmpty() throws Exception {
+        LoginPresenter loginPresenter = new LoginPresenter(view);
+
         loginPresenter.updateEmail(EMPTY_EMAIL);
-        loginPresenter.updatePassword(NOT_EMPTY_PASSWORD);
+        loginPresenter.updatePassword(EMPTY_PASSWORD);
 
         verify(view, atLeastOnce()).disableLoginButton();
         verify(view, never()).enableLoginButton();
