@@ -40,5 +40,15 @@ public class LoginPresenterTest {
         verify(view, never()).enableLoginButton();
     }
 
-    
+    @Test public void shouldDisableButtonWhenPasswordIsEmpty() throws Exception {
+        LoginPresenter loginPresenter = new LoginPresenter(view);
+
+        loginPresenter.updateEmail(EMPTY_EMAIL);
+        loginPresenter.updatePassword(NOT_EMPTY_PASSWORD);
+
+        verify(view, atLeastOnce()).disableLoginButton();
+        verify(view, never()).enableLoginButton();
+    }
+
+
 }
