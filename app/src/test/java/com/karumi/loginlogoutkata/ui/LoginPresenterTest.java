@@ -61,5 +61,11 @@ public class LoginPresenterTest {
         verify(view, never()).enableLoginButton();
     }
 
+    @Test public void shouldMakeLoginWhenCredentialsAreCorrectAndPressLogin() throws Exception {
+        LoginPresenter loginPresenter = new LoginPresenter(view);
 
+        loginPresenter.doLogin();
+
+        verify(view).logged();
+    }
 }

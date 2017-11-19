@@ -32,9 +32,15 @@ public class LoginPresenter {
         }
     }
 
+    public void doLogin() {
+
+    }
+
     interface View {
         void enableLoginButton();
 
         void disableLoginButton();
+
+        void logged();
     }
 }

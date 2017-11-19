@@ -55,4 +55,8 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.V
     @Override public void disableLoginButton() {
         loginButton.setEnabled(false);
     }
+
+    @Override public void logged() {
+
+    }
 }
