@@ -19,7 +19,7 @@ public class LoginPresenterTest {
     }
 
     @Test public void shouldEnableButtonWhenLoginAndFieldsAreNotEmpty() throws Exception {
-        LoginPresenter loginPresenter = new LoginPresenter();
+        LoginPresenter loginPresenter = new LoginPresenter(view);
 
         loginPresenter.updateEmail(NOT_EMPTY_EMAIL);
         loginPresenter.updatePassword(NOT_EMPTY_PASSWORD);

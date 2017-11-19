@@ -7,9 +7,8 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import com.karumi.loginlogoutkata.R;
-import com.karumi.loginlogoutkata.common.StringUtils;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements LoginPresenter.View {
 
     private EditText emailView;
     private EditText passwordView;
@@ -20,6 +19,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        loginPresenter = new LoginPresenter(this);
         mapUi();
     }
 
@@ -28,19 +28,31 @@ public class LoginActivity extends AppCompatActivity {
         passwordView = findViewById(R.id.et_password);
         loginButton = findViewById(R.id.bt_login);
 
-        emailView.addTextChangedListener(enableButtonTextWatcher);
-        passwordView.addTextChangedListener(enableButtonTextWatcher);
+        emailView.addTextChangedListener(emailTextWatcher);
+        passwordView.addTextChangedListener(passwordTextWatcher);
     }
 
-    TextWatcher enableButtonTextWatcher = new AfterTextWatcher() {
+    TextWatcher emailTextWatcher = new AfterTextWatcher() {
         @Override public void afterTextChanged(Editable editable) {
             String email = emailView.getText()
                 .toString();
-            String password = passwordView.getText()
-                .toString();
-
-            boolean enable = StringUtils.isNotEmpty(email) && StringUtils.isNotEmpty(password);
-            loginButton.setEnabled(enable);
+            loginPresenter.updateEmail(email);
         }
     };
+
+    TextWatcher passwordTextWatcher = new AfterTextWatcher() {
+        @Override public void afterTextChanged(Editable editable) {
+            String password = passwordView.getText()
+                .toString();
+            loginPresenter.updateEmail(password);
+        }
+    };
+
+    @Override public void enableLoginButton() {
+        loginButton.setEnabled(true);
+    }
+
+    @Override public void disableLoginButton() {
+        loginButton.setEnabled(false);
+    }
 }
