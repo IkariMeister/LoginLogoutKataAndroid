@@ -1,16 +1,20 @@
 package com.karumi.loginlogoutkata.ui;
 
 import com.karumi.loginlogoutkata.common.StringUtils;
+import com.karumi.loginlogoutkata.domain.usecase.DoLogin;
+import com.karumi.loginlogoutkata.domain.usecase.callback.LoginResponseCallback;
 
 public class LoginPresenter {
 
     private final View view;
+    private final DoLogin doLogin;
 
     private String email;
     private String password;
 
-    public LoginPresenter(View view) {
+    public LoginPresenter(View view, DoLogin doLogin) {
         this.view = view;
+        this.doLogin = doLogin;
     }
 
     public void updateEmail(String email) {
@@ -33,7 +37,11 @@ public class LoginPresenter {
     }
 
     public void doLogin() {
-
+        doLogin.login(email, password, new LoginResponseCallback() {
+            @Override public void sucess() {
+                view.logged();
+            }
+        });
     }
 
     interface View {
