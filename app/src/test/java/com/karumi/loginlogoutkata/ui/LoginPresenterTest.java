@@ -28,7 +28,6 @@ public class LoginPresenterTest {
     private static final int ARG_CALLBACK = 2;
 
     @Mock LoginPresenter.View view;
-    @Mock DoLogin doLogin;
     @Mock LoginApi loginApi;
     @Mock SessionCache sessionCache;
 
@@ -77,7 +76,7 @@ public class LoginPresenterTest {
 
     @Test public void shouldMakeLoginWhenCredentialsAreCorrectAndPressLogin() throws Exception {
         givenApiLoginCorrect();
-        LoginPresenter loginPresenter = givenLoginPresenter(givenDoLogin());
+        LoginPresenter loginPresenter = givenLoginPresenter();
 
         loginPresenter.updateEmail(NOT_EMPTY_EMAIL);
         loginPresenter.updatePassword(NOT_EMPTY_PASSWORD);
@@ -88,7 +87,7 @@ public class LoginPresenterTest {
 
     @Test public void shouldMakeReturnInvalidCredentialWhenEmailDoesNotExist() throws Exception {
         givenAnInvalidCredentials();
-        LoginPresenter loginPresenter = givenLoginPresenter(givenDoLogin());
+        LoginPresenter loginPresenter = givenLoginPresenter();
 
         loginPresenter.updateEmail(NOT_EMPTY_EMAIL);
         loginPresenter.updatePassword(NOT_EMPTY_PASSWORD);
@@ -99,7 +98,7 @@ public class LoginPresenterTest {
 
     @Test public void shouldStoreCredentialsWhenUserHasBeenLogged() throws CredentialException {
         UserSession userSession = givenApiLoginCorrect();
-        LoginPresenter loginPresenter = givenLoginPresenter(givenDoLogin());
+        LoginPresenter loginPresenter = givenLoginPresenter();
 
         loginPresenter.updateEmail(NOT_EMPTY_EMAIL);
         loginPresenter.updatePassword(NOT_EMPTY_PASSWORD);
@@ -116,11 +115,7 @@ public class LoginPresenterTest {
     }
 
     @NonNull private LoginPresenter givenLoginPresenter() {
-        return new LoginPresenter(view, doLogin);
-    }
-
-    @NonNull private LoginPresenter givenLoginPresenter(DoLogin doLogin) {
-        return new LoginPresenter(view, doLogin);
+        return new LoginPresenter(view, givenDoLogin());
     }
 
     @NonNull private DoLogin givenDoLogin() {
