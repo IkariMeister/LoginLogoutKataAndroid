@@ -1,7 +1,10 @@
 package com.karumi.loginlogoutkata.ui;
 
 import android.support.annotation.NonNull;
+import com.karumi.loginlogoutkata.data.LoginApi;
+import com.karumi.loginlogoutkata.data.SessionCache;
 import com.karumi.loginlogoutkata.domain.error.ErrorCredentials;
+import com.karumi.loginlogoutkata.domain.model.UserSession;
 import com.karumi.loginlogoutkata.domain.usecase.DoLogin;
 import com.karumi.loginlogoutkata.domain.usecase.callback.LoginResponseCallback;
 import org.junit.Before;
@@ -18,6 +21,7 @@ import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class LoginPresenterTest {
 
@@ -29,6 +33,8 @@ public class LoginPresenterTest {
 
     @Mock LoginPresenter.View view;
     @Mock DoLogin doLogin;
+    @Mock LoginApi loginApi;
+    @Mock SessionCache sessionCache;
 
     @Before public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
@@ -93,6 +99,25 @@ public class LoginPresenterTest {
         loginPresenter.doLogin();
 
         verify(view).showError(eq(errorCredentials));
+    }
+
+    @Test public void shouldStoreCredentialsWhenUserHasBeenLogged() {
+        UserSession userSession = givenApiLoginCorrect();
+
+        LoginPresenter loginPresenter = givenLoginPresenter();
+
+        loginPresenter.updateEmail(NOT_EMPTY_EMAIL);
+        loginPresenter.updatePassword(NOT_EMPTY_PASSWORD);
+        loginPresenter.doLogin();
+
+        verify(sessionCache).storeSession(userSession);
+    }
+
+    private UserSession givenApiLoginCorrect() {
+        UserSession userSession = new UserSession();
+        when(loginApi.login(anyString(), anyString())).thenReturn(userSession);
+
+        return userSession;
     }
 
     @NonNull private LoginPresenter givenLoginPresenter() {
