@@ -72,5 +72,7 @@ public class LoginPresenter {
         void logged();
 
         void showError(Error error);
+
+        void showLogin();
     }
 }

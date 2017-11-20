@@ -32,7 +32,6 @@ public class LoginPresenterTest {
     @Mock LoginPresenter.View view;
     @Mock LoginApi loginApi;
     @Mock SessionCache sessionCache;
-    private LoginPresenter loginPresenter;
 
     @Before public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
@@ -125,6 +124,14 @@ public class LoginPresenterTest {
         loginPresenter.logout();
 
         verify(sessionCache).clear();
+    }
+
+    @Test public void shouldShowLoginWhenTheUserPressLogout() throws Exception {
+        LoginPresenter loginPresenter = givenLoginPresenter();
+
+        loginPresenter.logout();
+
+        verify(view).showLogin();
     }
 
     private UserSession givenApiLoginCorrect() throws CredentialException {

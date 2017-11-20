@@ -78,4 +78,8 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.V
     @Override public void showError(Error error) {
 
     }
+
+    @Override public void showLogin() {
+
+    }
 }
