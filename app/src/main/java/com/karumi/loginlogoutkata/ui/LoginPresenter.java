@@ -1,7 +1,6 @@
 package com.karumi.loginlogoutkata.ui;
 
 import com.karumi.loginlogoutkata.common.StringUtils;
-import com.karumi.loginlogoutkata.domain.error.ErrorCredentials;
 import com.karumi.loginlogoutkata.domain.usecase.DoLogin;
 import com.karumi.loginlogoutkata.domain.usecase.callback.LoginResponseCallback;
 
@@ -44,7 +43,7 @@ public class LoginPresenter {
             }
 
             @Override public void error(Error error) {
-
+                view.showError(error);
             }
         });
     }
@@ -56,6 +55,6 @@ public class LoginPresenter {
 
         void logged();
 
-        void showError(ErrorCredentials eq);
+        void showError(Error error);
     }
 }
