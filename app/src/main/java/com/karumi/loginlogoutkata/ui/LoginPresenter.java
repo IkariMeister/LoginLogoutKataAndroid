@@ -2,19 +2,22 @@ package com.karumi.loginlogoutkata.ui;
 
 import com.karumi.loginlogoutkata.common.StringUtils;
 import com.karumi.loginlogoutkata.domain.usecase.DoLogin;
+import com.karumi.loginlogoutkata.domain.usecase.IsLogged;
 import com.karumi.loginlogoutkata.domain.usecase.callback.LoginResponseCallback;
 
 public class LoginPresenter {
 
     private final View view;
     private final DoLogin doLogin;
+    private final IsLogged isLogged;
 
     private String email;
     private String password;
 
-    public LoginPresenter(View view, DoLogin doLogin) {
+    public LoginPresenter(View view, DoLogin doLogin, IsLogged isLogged) {
         this.view = view;
         this.doLogin = doLogin;
+        this.isLogged = isLogged;
     }
 
     public void updateEmail(String email) {
@@ -49,6 +52,9 @@ public class LoginPresenter {
     }
 
     public void onResume() {
+        if (isLogged.isLogged()) {
+            view.logged();
+        }
     }
 
     interface View {

@@ -30,8 +30,10 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.V
     }
 
     private void initPresenter() {
-        DoLogin doLogin = new DoLogin(new LoginApi(), new SessionCache());
-        loginPresenter = new LoginPresenter(this, doLogin);
+        SessionCache sessionCache = new SessionCache();
+        DoLogin doLogin = new DoLogin(new LoginApi(), sessionCache);
+        IsLogged isLogged = new IsLogged(sessionCache);
+        loginPresenter = new LoginPresenter(this, doLogin, isLogged);
     }
 
     private void mapUi() {
