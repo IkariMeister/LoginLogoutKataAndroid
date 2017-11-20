@@ -10,6 +10,7 @@ import com.karumi.loginlogoutkata.R;
 import com.karumi.loginlogoutkata.data.LoginApi;
 import com.karumi.loginlogoutkata.data.SessionCache;
 import com.karumi.loginlogoutkata.domain.usecase.DoLogin;
+import com.karumi.loginlogoutkata.domain.usecase.DoLogout;
 import com.karumi.loginlogoutkata.domain.usecase.IsLogged;
 
 public class LoginActivity extends AppCompatActivity implements LoginPresenter.View {
@@ -33,7 +34,8 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.V
         SessionCache sessionCache = new SessionCache();
         DoLogin doLogin = new DoLogin(new LoginApi(), sessionCache);
         IsLogged isLogged = new IsLogged(sessionCache);
-        loginPresenter = new LoginPresenter(this, doLogin, isLogged);
+        DoLogout doLogout = new DoLogout(sessionCache);
+        loginPresenter = new LoginPresenter(this, doLogin, isLogged, doLogout);
     }
 
     private void mapUi() {

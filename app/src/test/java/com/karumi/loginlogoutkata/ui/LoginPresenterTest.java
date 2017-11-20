@@ -7,6 +7,7 @@ import com.karumi.loginlogoutkata.data.exception.CredentialException;
 import com.karumi.loginlogoutkata.domain.error.ErrorCredentials;
 import com.karumi.loginlogoutkata.domain.model.UserSession;
 import com.karumi.loginlogoutkata.domain.usecase.DoLogin;
+import com.karumi.loginlogoutkata.domain.usecase.DoLogout;
 import com.karumi.loginlogoutkata.domain.usecase.IsLogged;
 import org.junit.Before;
 import org.junit.Test;
@@ -138,7 +139,11 @@ public class LoginPresenterTest {
     }
 
     @NonNull private LoginPresenter givenLoginPresenter() {
-        return new LoginPresenter(view, givenDoLogin(), givenIsLogged());
+        return new LoginPresenter(view, givenDoLogin(), givenIsLogged(), givenDoLogout());
+    }
+
+    private DoLogout givenDoLogout() {
+        return new DoLogout(sessionCache);
     }
 
     private IsLogged givenIsLogged() {
