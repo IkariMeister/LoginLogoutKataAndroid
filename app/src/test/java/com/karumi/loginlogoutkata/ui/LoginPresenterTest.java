@@ -7,19 +7,14 @@ import com.karumi.loginlogoutkata.data.exception.CredentialException;
 import com.karumi.loginlogoutkata.domain.error.ErrorCredentials;
 import com.karumi.loginlogoutkata.domain.model.UserSession;
 import com.karumi.loginlogoutkata.domain.usecase.DoLogin;
-import com.karumi.loginlogoutkata.domain.usecase.callback.LoginResponseCallback;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -81,8 +76,8 @@ public class LoginPresenterTest {
     }
 
     @Test public void shouldMakeLoginWhenCredentialsAreCorrectAndPressLogin() throws Exception {
-        givenASucessLogin();
-        LoginPresenter loginPresenter = givenLoginPresenter();
+        givenApiLoginCorrect();
+        LoginPresenter loginPresenter = givenLoginPresenter(givenDoLogin());
 
         loginPresenter.updateEmail(NOT_EMPTY_EMAIL);
         loginPresenter.updatePassword(NOT_EMPTY_PASSWORD);
@@ -92,14 +87,14 @@ public class LoginPresenterTest {
     }
 
     @Test public void shouldMakeReturnInvalidCredentialWhenEmailDoesNotExist() throws Exception {
-        ErrorCredentials errorCredentials = givenAnInvalidCredentials();
-        LoginPresenter loginPresenter = givenLoginPresenter();
+        givenAnInvalidCredentials();
+        LoginPresenter loginPresenter = givenLoginPresenter(givenDoLogin());
 
         loginPresenter.updateEmail(NOT_EMPTY_EMAIL);
         loginPresenter.updatePassword(NOT_EMPTY_PASSWORD);
         loginPresenter.doLogin();
 
-        verify(view).showError(eq(errorCredentials));
+        verify(view).showError(any(ErrorCredentials.class));
     }
 
     @Test public void shouldStoreCredentialsWhenUserHasBeenLogged() throws CredentialException {
@@ -132,31 +127,7 @@ public class LoginPresenterTest {
         return new DoLogin(loginApi, sessionCache);
     }
 
-    private ErrorCredentials givenAnInvalidCredentials() {
-        final ErrorCredentials errorCredentials = new ErrorCredentials();
-
-        doAnswer(new Answer() {
-            @Override public Void answer(InvocationOnMock invocation) throws Throwable {
-                LoginResponseCallback callback =
-                    (LoginResponseCallback) invocation.getArguments()[ARG_CALLBACK];
-                callback.error(errorCredentials);
-                return null;
-            }
-        }).when(doLogin)
-            .login(anyString(), anyString(), any(LoginResponseCallback.class));
-
-        return errorCredentials;
-    }
-
-    private void givenASucessLogin() {
-        doAnswer(new Answer() {
-            @Override public Void answer(InvocationOnMock invocation) throws Throwable {
-                LoginResponseCallback callback =
-                    (LoginResponseCallback) invocation.getArguments()[ARG_CALLBACK];
-                callback.sucess();
-                return null;
-            }
-        }).when(doLogin)
-            .login(anyString(), anyString(), any(LoginResponseCallback.class));
+    private void givenAnInvalidCredentials() throws CredentialException {
+        when(loginApi.login(anyString(), anyString())).thenThrow(new CredentialException());
     }
 }
