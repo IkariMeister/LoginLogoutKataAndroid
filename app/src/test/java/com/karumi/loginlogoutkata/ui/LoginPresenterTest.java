@@ -3,6 +3,7 @@ package com.karumi.loginlogoutkata.ui;
 import android.support.annotation.NonNull;
 import com.karumi.loginlogoutkata.data.LoginApi;
 import com.karumi.loginlogoutkata.data.SessionCache;
+import com.karumi.loginlogoutkata.data.exception.CredentialException;
 import com.karumi.loginlogoutkata.domain.error.ErrorCredentials;
 import com.karumi.loginlogoutkata.domain.model.UserSession;
 import com.karumi.loginlogoutkata.domain.usecase.DoLogin;
@@ -101,7 +102,7 @@ public class LoginPresenterTest {
         verify(view).showError(eq(errorCredentials));
     }
 
-    @Test public void shouldStoreCredentialsWhenUserHasBeenLogged() {
+    @Test public void shouldStoreCredentialsWhenUserHasBeenLogged() throws CredentialException {
         UserSession userSession = givenApiLoginCorrect();
         LoginPresenter loginPresenter = givenLoginPresenter(givenDoLogin());
 
@@ -112,7 +113,7 @@ public class LoginPresenterTest {
         verify(sessionCache).storeSession(userSession);
     }
 
-    private UserSession givenApiLoginCorrect() {
+    private UserSession givenApiLoginCorrect() throws CredentialException {
         UserSession userSession = new UserSession();
         when(loginApi.login(anyString(), anyString())).thenReturn(userSession);
 
