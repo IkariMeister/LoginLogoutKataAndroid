@@ -7,6 +7,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import com.karumi.loginlogoutkata.R;
+import com.karumi.loginlogoutkata.domain.error.ErrorCredentials;
 import com.karumi.loginlogoutkata.domain.usecase.DoLogin;
 
 public class LoginActivity extends AppCompatActivity implements LoginPresenter.View {
@@ -58,6 +59,10 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.V
     }
 
     @Override public void logged() {
+
+    }
+
+    @Override public void showError(ErrorCredentials eq) {
 
     }
 }
