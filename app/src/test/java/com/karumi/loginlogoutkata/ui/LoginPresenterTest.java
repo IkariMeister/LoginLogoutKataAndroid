@@ -103,8 +103,7 @@ public class LoginPresenterTest {
 
     @Test public void shouldStoreCredentialsWhenUserHasBeenLogged() {
         UserSession userSession = givenApiLoginCorrect();
-
-        LoginPresenter loginPresenter = givenLoginPresenter();
+        LoginPresenter loginPresenter = givenLoginPresenter(givenDoLogin());
 
         loginPresenter.updateEmail(NOT_EMPTY_EMAIL);
         loginPresenter.updatePassword(NOT_EMPTY_PASSWORD);
@@ -122,6 +121,14 @@ public class LoginPresenterTest {
 
     @NonNull private LoginPresenter givenLoginPresenter() {
         return new LoginPresenter(view, doLogin);
+    }
+
+    @NonNull private LoginPresenter givenLoginPresenter(DoLogin doLogin) {
+        return new LoginPresenter(view, doLogin);
+    }
+
+    @NonNull private DoLogin givenDoLogin() {
+        return new DoLogin(loginApi, sessionCache);
     }
 
     private ErrorCredentials givenAnInvalidCredentials() {

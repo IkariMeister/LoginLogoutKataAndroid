@@ -7,6 +7,8 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import com.karumi.loginlogoutkata.R;
+import com.karumi.loginlogoutkata.data.LoginApi;
+import com.karumi.loginlogoutkata.data.SessionCache;
 import com.karumi.loginlogoutkata.domain.usecase.DoLogin;
 
 public class LoginActivity extends AppCompatActivity implements LoginPresenter.View {
@@ -20,7 +22,10 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.V
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        loginPresenter = new LoginPresenter(this, new DoLogin());
+
+        DoLogin doLogin = new DoLogin(new LoginApi(), new SessionCache());
+        loginPresenter = new LoginPresenter(this, doLogin);
+
         mapUi();
     }
 
