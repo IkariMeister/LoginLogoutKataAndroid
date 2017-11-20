@@ -23,10 +23,14 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.V
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        DoLogin doLogin = new DoLogin(new LoginApi(), new SessionCache());
-        loginPresenter = new LoginPresenter(this, doLogin);
+        initPresenter();
 
         mapUi();
+    }
+
+    private void initPresenter() {
+        DoLogin doLogin = new DoLogin(new LoginApi(), new SessionCache());
+        loginPresenter = new LoginPresenter(this, doLogin);
     }
 
     private void mapUi() {
