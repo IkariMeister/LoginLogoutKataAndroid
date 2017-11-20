@@ -48,6 +48,9 @@ public class LoginPresenter {
         });
     }
 
+    public void onResume() {
+    }
+
     interface View {
         void enableLoginButton();
 

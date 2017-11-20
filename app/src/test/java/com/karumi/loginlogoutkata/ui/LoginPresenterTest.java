@@ -7,6 +7,7 @@ import com.karumi.loginlogoutkata.data.exception.CredentialException;
 import com.karumi.loginlogoutkata.domain.error.ErrorCredentials;
 import com.karumi.loginlogoutkata.domain.model.UserSession;
 import com.karumi.loginlogoutkata.domain.usecase.DoLogin;
+import com.karumi.loginlogoutkata.domain.usecase.IsLogged;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -30,6 +31,7 @@ public class LoginPresenterTest {
     @Mock LoginPresenter.View view;
     @Mock LoginApi loginApi;
     @Mock SessionCache sessionCache;
+    private LoginPresenter loginPresenter;
 
     @Before public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
@@ -107,6 +109,19 @@ public class LoginPresenterTest {
         verify(sessionCache).storeSession(userSession);
     }
 
+    @Test public void shouldLoginIfTheCredentialsHasBeenProvided() throws Exception {
+        givenCredentials();
+        LoginPresenter loginPresenter = givenLoginPresenter();
+
+        loginPresenter.onResume();
+
+        verify(view).logged();
+    }
+
+    @Test public void shouldRemoveCacheDataWhenTheUserPressLogout() throws Exception {
+
+    }
+
     private UserSession givenApiLoginCorrect() throws CredentialException {
         UserSession userSession = new UserSession();
         when(loginApi.login(anyString(), anyString())).thenReturn(userSession);
@@ -114,8 +129,16 @@ public class LoginPresenterTest {
         return userSession;
     }
 
+    private void givenCredentials() {
+        when(sessionCache.hasCredentials()).thenReturn(true);
+    }
+
     @NonNull private LoginPresenter givenLoginPresenter() {
-        return new LoginPresenter(view, givenDoLogin());
+        return new LoginPresenter(view, givenDoLogin(), givenIsLogged());
+    }
+
+    private IsLogged givenIsLogged() {
+        return new IsLogged(sessionCache);
     }
 
     @NonNull private DoLogin givenDoLogin() {

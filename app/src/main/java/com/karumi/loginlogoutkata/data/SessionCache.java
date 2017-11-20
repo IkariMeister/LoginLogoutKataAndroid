@@ -6,4 +6,8 @@ public class SessionCache {
     public void storeSession(UserSession session) {
 
     }
+
+    public boolean hasCredentials() {
+        return false;
+    }
 }

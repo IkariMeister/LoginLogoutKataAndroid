@@ -10,6 +10,7 @@ import com.karumi.loginlogoutkata.R;
 import com.karumi.loginlogoutkata.data.LoginApi;
 import com.karumi.loginlogoutkata.data.SessionCache;
 import com.karumi.loginlogoutkata.domain.usecase.DoLogin;
+import com.karumi.loginlogoutkata.domain.usecase.IsLogged;
 
 public class LoginActivity extends AppCompatActivity implements LoginPresenter.View {
 
