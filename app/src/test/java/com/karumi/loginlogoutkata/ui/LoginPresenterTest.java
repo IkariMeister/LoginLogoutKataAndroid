@@ -119,7 +119,11 @@ public class LoginPresenterTest {
     }
 
     @Test public void shouldRemoveCacheDataWhenTheUserPressLogout() throws Exception {
+        LoginPresenter loginPresenter = givenLoginPresenter();
 
+        loginPresenter.logout();
+
+        verify(sessionCache).clear();
     }
 
     private UserSession givenApiLoginCorrect() throws CredentialException {

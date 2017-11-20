@@ -57,6 +57,9 @@ public class LoginPresenter {
         }
     }
 
+    public void logout() {
+    }
+
     interface View {
         void enableLoginButton();
 

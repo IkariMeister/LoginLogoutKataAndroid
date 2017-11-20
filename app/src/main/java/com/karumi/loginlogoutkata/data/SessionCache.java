@@ -10,4 +10,8 @@ public class SessionCache {
     public boolean hasCredentials() {
         return false;
     }
+
+    public void clear() {
+
+    }
 }
