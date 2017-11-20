@@ -62,6 +62,7 @@ public class LoginPresenter {
 
     public void logout() {
         doLogout.logout();
+        view.showLogin();
     }
 
     interface View {
